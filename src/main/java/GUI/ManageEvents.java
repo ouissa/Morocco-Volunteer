@@ -270,7 +270,7 @@ public class ManageEvents extends javax.swing.JFrame {
         int row = jTable1.getSelectedRow();
         int eventid = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
         
-        ViewEventPosition frm = new ViewEventPosition(eventid);
+        ViewEventPositions frm = new ViewEventPositions(eventid);
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
@@ -288,7 +288,15 @@ public class ManageEvents extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        
+        int column = 0;
+        int row = jTable1.getSelectedRow();
+        int eventId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
+        /*ViewPositionVolunteers frm = new ViewPositionVolunteers(eventId);
+        frm.setLocation(getLocation());
+        frm.setSize(getSize());
+        setVisible(false);
+        frm.setVisible(true);
+        dispose();*/
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
