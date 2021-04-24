@@ -19,10 +19,12 @@ public class Authentication extends javax.swing.JFrame {
      */
     public static String currentUserEmail;
     public static String currentUserPassword;
+    public static String currentUserId;
     public Authentication() {
         initComponents();
         currentUserEmail = "";
         currentUserPassword = "";
+        currentUserId = "";
     }
 
     /**

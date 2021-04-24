@@ -311,7 +311,12 @@ public class OrganizationRegister extends javax.swing.JFrame {
             currentUserPassword = jPasswordField1.getText();
             
             JOptionPane.showMessageDialog(this, "Registered Successfully");
-            //Switch to frame of organization menu
+            OrganizationMenu frm = new OrganizationMenu();
+            frm.setLocation(getLocation());
+            frm.setSize(getSize());
+            setVisible(false);
+            frm.setVisible(true);
+            dispose();
             
           }
           catch (SQLException ex)
