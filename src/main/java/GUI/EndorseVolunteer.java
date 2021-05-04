@@ -144,9 +144,21 @@ public class EndorseVolunteer extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try (Connection conn = DriverManager.getConnection(url, uid, pw)) {
             
+            int endorsementNumber = 0;
+            Statement tmpStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+            ResultSet rs = tmpStmt.executeQuery("SELECT endorsementNumber FROM VolunteerEndorsement");
+            if(rs.last()){
+                endorsementNumber = rs.getInt("endorsementNumber")+1;
+            }
+            else{
+                System.out.println("Error");
+                System.exit(0);
+            }
+            
             String qry = "INSERT INTO VolunteerEndorsement"
-            + " (organizationId, volunteerId, volunteerRating, comment)"
-           + " VALUES ("+currentUserId+", "+this.volunteerId+", "+Integer.parseInt(jTextField1.getText())+", '"+jTextArea1.getText()+"');";
+            + " (endorsementNumber, organizationId, volunteerId, volunteerRating, comment)"
+           + " VALUES ("+endorsementNumber+","+currentUserId+", "+this.volunteerId+", "+Integer.parseInt(jTextField1.getText())+", '"+jTextArea1.getText()+"');";
 
             PreparedStatement prepStmt = conn.prepareStatement(qry);
            

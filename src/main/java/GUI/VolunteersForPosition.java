@@ -186,16 +186,27 @@ public class VolunteersForPosition extends javax.swing.JFrame {
         try (Connection conn = DriverManager.getConnection(url, uid, pw)) {
 
             String qry = "INSERT INTO Request "
-            + " (positionId, volunteerId, requestStatus)"
-           + " VALUES (?, ?, 'pending');";
+            + " (requestNumber, positionId, volunteerId, requestStatus)"
+           + " VALUES (?, ?, ?, 'pending');";
 
-            
+            int requestNumber = 0;
+            Statement tmpStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+            ResultSet rs = tmpStmt.executeQuery("SELECT requestNumber FROM Request");
+            if(rs.last()){
+                requestNumber = rs.getInt("requestNumber")+1;
+            }
+            else{
+                System.out.println("Error");
+                System.exit(0);
+            }
             int column = 0;
             int row = jTable1.getSelectedRow();
             int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
             PreparedStatement prepStmt = conn.prepareStatement(qry);
-            prepStmt.setInt (1, positionId);
-            prepStmt.setInt (2, volunteerId);
+            prepStmt.setInt(1, requestNumber);
+            prepStmt.setInt (2, positionId);
+            prepStmt.setInt (3, volunteerId);
             
             prepStmt.execute();
             JOptionPane.showMessageDialog(this, "The request has been sent to the volunteer");
