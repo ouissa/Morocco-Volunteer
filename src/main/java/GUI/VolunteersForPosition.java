@@ -83,8 +83,8 @@ public class VolunteersForPosition extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,17 +107,17 @@ public class VolunteersForPosition extends javax.swing.JFrame {
 
         jButton1.setText("Search");
 
-        jButton2.setText("Send Request");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jButton3.setText("Back");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("View Profile");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -131,9 +131,9 @@ public class VolunteersForPosition extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -156,7 +156,7 @@ public class VolunteersForPosition extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
                         .addGap(195, 195, 195))))
@@ -182,43 +182,6 @@ public class VolunteersForPosition extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try (Connection conn = DriverManager.getConnection(url, uid, pw)) {
-
-            String qry = "INSERT INTO Request "
-            + " (requestNumber, positionId, volunteerId, requestStatus)"
-           + " VALUES (?, ?, ?, 'pending');";
-
-            int requestNumber = 0;
-            Statement tmpStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
-            ResultSet rs = tmpStmt.executeQuery("SELECT requestNumber FROM Request");
-            if(rs.last()){
-                requestNumber = rs.getInt("requestNumber")+1;
-            }
-            else{
-                System.out.println("Error");
-                System.exit(0);
-            }
-            int column = 0;
-            int row = jTable1.getSelectedRow();
-            int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
-            PreparedStatement prepStmt = conn.prepareStatement(qry);
-            prepStmt.setInt(1, requestNumber);
-            prepStmt.setInt (2, positionId);
-            prepStmt.setInt (3, volunteerId);
-            
-            prepStmt.execute();
-            JOptionPane.showMessageDialog(this, "The request has been sent to the volunteer");
-            }
-            catch (SQLException ex) {
-                System.err.println("SQLException: " + ex);
-            }
-            catch (Exception e) {
-                System.err.println("Exception: " + e);
-            }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ViewPositionsOfEvent frm = new ViewPositionsOfEvent(this.positionId);
         frm.setLocation(getLocation());
@@ -227,6 +190,18 @@ public class VolunteersForPosition extends javax.swing.JFrame {
         frm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        int column = 0;
+        int row1 = jTable1.getSelectedRow();
+        int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row1, column).toString());
+        VolunteerProfile frm = new VolunteerProfile(this, volunteerId, this.positionId);
+        frm.setLocation(getLocation());
+        frm.setSize(getSize());
+        setVisible(false);
+        frm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,8 +240,8 @@ public class VolunteersForPosition extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -53,12 +53,7 @@ public class ManageVolunteers extends javax.swing.JFrame {
         });
         jComboBox1.addActionListener (new ActionListener () {
         public void actionPerformed(ActionEvent e) {
-            if(jComboBox1.getSelectedItem().toString().equals("Current")){
-                jButton2.setVisible(true);
-            }
-            else{
-                jButton2.setVisible(false);
-            }
+            //
         }
         });
         ((DefaultTableModel)(jTable1.getModel())).setRowCount(0);
@@ -71,11 +66,11 @@ public class ManageVolunteers extends javax.swing.JFrame {
                 + " NATURAL JOIN Position AS P INNER JOIN Event as E ON E.eventId = P.eventId"
                 + " WHERE E.organizationId = "+currentUserId+" AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'participated')"
                 + " UNION "
-                + " SELECT V.volunteerId, V.firstname, V.lastname"
+                + "SELECT V.volunteerId, V.firstname, V.lastname"
                 + " FROM Volunteer AS V NATURAL JOIN Request AS R"
                 + " NATURAL JOIN Position AS P INNER JOIN Event AS E ON E.eventId = P.eventId"
                 + " WHERE E.organizationId = "+currentUserId+" AND (R.requestStatus = 'accepted' OR R.requestStatus = 'participated');";
-                               
+                System.out.println(qry); 
                 ResultSet rs = stmt.executeQuery(qry);
                 
                 ResultSetMetaData rsmd = rs.getMetaData();
@@ -155,11 +150,11 @@ public class ManageVolunteers extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jComboBox2 = new javax.swing.JComboBox<>();
         jComboBox3 = new javax.swing.JComboBox<>();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -202,13 +197,6 @@ public class ManageVolunteers extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Endorse Volunteer");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jButton4.setText("Back");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -232,6 +220,13 @@ public class ManageVolunteers extends javax.swing.JFrame {
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All" }));
 
+        jButton6.setText("View Profile");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -254,11 +249,11 @@ public class ManageVolunteers extends javax.swing.JFrame {
                                     .addComponent(jComboBox1, 0, 1, Short.MAX_VALUE)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3)
-                            .addComponent(jButton4)
-                            .addComponent(jButton5)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -286,11 +281,11 @@ public class ManageVolunteers extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(157, 157, 157)
-                        .addComponent(jButton3)
+                        .addGap(163, 163, 163)
+                        .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(jButton5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton4)))
@@ -318,6 +313,12 @@ public class ManageVolunteers extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String qry = "";
+        if(jComboBox1.getSelectedItem().toString().equals("Current")){
+                jButton2.setVisible(true);
+        }
+        else{
+            jButton2.setVisible(false);
+        }
         if(jComboBox2.getSelectedItem().toString().equals("All") && jComboBox3.getSelectedItem().toString().equals("All")){
             //none
             String sub_qry1 = "SELECT V.volunteerId, V.firstname, V.lastname"
@@ -327,13 +328,13 @@ public class ManageVolunteers extends javax.swing.JFrame {
                     
             String sub_qry2 = " UNION SELECT V.volunteerId, V.firstname, V.lastname"
                     + " FROM Volunteer AS V NATURAL JOIN Request AS R"
-                    + " NATURAL JOIN Position AS P INNER JOIN Event AS E ON E.eventId = P.eventId "
+                    + " NATURAL JOIN Position AS P INNER JOIN Event AS E ON E.eventId = P.eventId"
                     + " WHERE E.organizationId = "+currentUserId+"";
             if(jComboBox1.getSelectedItem().toString().equals("All")){
-                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'partcicipated')";
-                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'partcicipated')";
+                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'participated')";
+                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'participated')";
                 qry = sub_qry1 + sub_qry2;
-                
+                System.out.println(qry);
             }
             else if(jComboBox1.getSelectedItem().toString().equals("Current")){
                 sub_qry1 += " AND (A.applicationStatus = 'accepted')";
@@ -359,8 +360,8 @@ public class ManageVolunteers extends javax.swing.JFrame {
                     + " NATURAL JOIN Position AS P INNER JOIN Event AS E ON E.eventId = P.eventId "
                     + " WHERE E.organizationId = "+currentUserId+" AND E.name = '"+jComboBox2.getSelectedItem().toString()+"' AND P.role = '"+jComboBox3.getSelectedItem().toString()+"'";
             if(jComboBox1.getSelectedItem().toString().equals("All")){
-                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'partcicipated')";
-                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'partcicipated')";
+                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'participated')";
+                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'participated')";
                 qry = sub_qry1 + sub_qry2;
                 
             }
@@ -387,8 +388,8 @@ public class ManageVolunteers extends javax.swing.JFrame {
                     + " NATURAL JOIN Position AS P INNER JOIN Event AS E ON E.eventId = P.eventId "
                     + " WHERE E.organizationId = "+currentUserId+" AND E.name = '"+jComboBox2.getSelectedItem().toString()+"' AND P.role = '"+jComboBox3.getSelectedItem().toString()+"'";
             if(jComboBox1.getSelectedItem().toString().equals("All")){
-                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'partcicipated')";
-                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'partcicipated')";
+                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'participated')";
+                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'participated')";
                 qry = sub_qry1 + sub_qry2;
                 
             }
@@ -415,8 +416,8 @@ public class ManageVolunteers extends javax.swing.JFrame {
                     + " NATURAL JOIN Position AS P INNER JOIN Event AS E ON E.eventId = P.eventId "
                     + " WHERE E.organizationId = "+currentUserId+" AND P.role = '"+jComboBox3.getSelectedItem().toString()+"'";
             if(jComboBox1.getSelectedItem().toString().equals("All")){
-                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'partcicipated')";
-                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'partcicipated')";
+                sub_qry1 += " AND (A.applicationStatus = 'accepted' OR A.applicationStatus = 'participated')";
+                sub_qry2 += " AND (R.requestStatus = 'accepted' OR R.requestStatus = 'participated')";
                 qry = sub_qry1 + sub_qry2;
             }
             else if(jComboBox1.getSelectedItem().toString().equals("Current")){
@@ -507,17 +508,17 @@ public class ManageVolunteers extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         int column = 0;
         int row1 = jTable1.getSelectedRow();
         int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row1, column).toString());
-        EndorseVolunteer frm = new EndorseVolunteer(volunteerId);
+        VolunteerProfile frm = new VolunteerProfile(this, volunteerId);
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
         frm.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -557,9 +558,9 @@ public class ManageVolunteers extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;

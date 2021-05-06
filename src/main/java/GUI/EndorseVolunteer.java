@@ -20,12 +20,14 @@ public class EndorseVolunteer extends javax.swing.JFrame {
     String uid = "lmalkia";
     String pw = "Lmalki15";
     private int volunteerId;
+    private Object form;
     public EndorseVolunteer() {
         initComponents();
     }
-    public EndorseVolunteer(int volunteerId){
+    public EndorseVolunteer(Object form, int volunteerId){
         initComponents();
         this.volunteerId = volunteerId;
+        this.form = form;
     }
 
     /**
@@ -173,7 +175,7 @@ public class EndorseVolunteer extends javax.swing.JFrame {
             catch (Exception e) {
                 System.err.println("Exception: " + e);
             }
-            ManageEvents frm = new ManageEvents();
+            VolunteerProfile frm = new VolunteerProfile(this.form, this.volunteerId);
             frm.setLocation(getLocation());
             frm.setSize(getSize());
             setVisible(false);
@@ -182,7 +184,7 @@ public class EndorseVolunteer extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ManageVolunteers frm = new ManageVolunteers();
+        VolunteerProfile frm = new VolunteerProfile(this.form, this.volunteerId);
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
