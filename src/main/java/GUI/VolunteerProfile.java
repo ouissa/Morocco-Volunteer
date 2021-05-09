@@ -12,6 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import static GUI.Authentication.currentUserId;
+
+  
 
 /**
  *
@@ -22,9 +30,9 @@ public class VolunteerProfile extends javax.swing.JFrame {
     /**
      * Creates new form VolunteerProfile
      */
-    String url = "jdbc:postgresql://localhost/lmalkia";
-    String uid = "lmalkia";
-    String pw = "Lmalki15";
+        String url;
+        String uid;
+        String pw;
     private Object previousForm;
     private int volunteerId;
     private int positionId;
@@ -34,18 +42,53 @@ public class VolunteerProfile extends javax.swing.JFrame {
     }
     
     public VolunteerProfile(Object frm, int volunteerId){
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
         jTextArea1.setEditable(false);
         this.previousForm = frm;
         this.volunteerId = volunteerId;
         jButton2.setVisible(false);
         jButton3.setVisible(false);
+        jButton4.setVisible(false);
+        jButton5.setVisible(false);
+        jButton6.setVisible(false);
+        jButton7.setVisible(false);
+        
+        jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
+        jTextField3.setEditable(false);
+        jTextField4.setEditable(false);
+        
         if(this.previousForm instanceof ManageVolunteers){
             jButton2.setVisible(true);
         }
         else if(this.previousForm instanceof VolunteersForPosition){
             jButton3.setVisible(true);
         }
+        else if(this.previousForm instanceof ManageApplications){
+            jButton4.setVisible(true);
+            jButton5.setVisible(true);
+        }
+        else if(this.previousForm instanceof VolunteerMenu){
+            jButton6.setVisible(true);
+            jButton7.setVisible(true);
+        }
+       
+        
         
         try (Connection conn = DriverManager.getConnection(url, uid, pw); Statement stmt = conn.createStatement()) {
             String qry = "SELECT firstname, lastname, birthdate, gender, address from Volunteer where volunteerId = "+this.volunteerId+";";
@@ -53,10 +96,10 @@ public class VolunteerProfile extends javax.swing.JFrame {
             // Result set get the result of the SQL query
             ResultSet rs = stmt.executeQuery(qry);
             if(rs.next()){
-                jLabel6.setText(rs.getString(1));
-                jLabel7.setText(rs.getString(2));
-                jLabel8.setText(rs.getString(3));
-                jLabel9.setText(rs.getString(4));
+                jTextField1.setText(rs.getString(1));
+                jTextField2.setText(rs.getString(2));
+                jTextField3.setText(rs.getString(3));
+                jTextField4.setText(rs.getString(4));
                 jTextArea1.setText(rs.getString(5));
             }
             else{
@@ -95,6 +138,21 @@ public class VolunteerProfile extends javax.swing.JFrame {
         
     }
     public VolunteerProfile(Object frm, int volunteerId, int positionId){
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
         System.out.println("Hello this constructor was called");
         this.positionId = positionId;
@@ -102,23 +160,38 @@ public class VolunteerProfile extends javax.swing.JFrame {
         this.previousForm = frm;
         jButton2.setVisible(false);
         jButton3.setVisible(false);
+        jButton4.setVisible(false);
+        jButton5.setVisible(false);
+        jButton6.setVisible(false);
+        jButton7.setVisible(false);
+        
         jTextArea1.setEditable(false);
-        if(this.previousForm instanceof VolunteersForPosition){
+        jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
+        jTextField3.setEditable(false);
+        jTextField4.setEditable(false);
+        
+        if(this.previousForm instanceof VolunteersForPosition  || this.previousForm instanceof RequestVolunteers){
             jButton3.setVisible(true);
         }
         else if(this.previousForm instanceof ManageVolunteers){
             jButton2.setVisible(true);
         }
+        else if(this.previousForm instanceof ManageApplications){
+            jButton4.setVisible(true);
+            jButton5.setVisible(true);
+        }
+        
         try (Connection conn = DriverManager.getConnection(url, uid, pw); Statement stmt = conn.createStatement()) {
             String qry = "SELECT firstname, lastname, birthdate, gender, address from Volunteer where volunteerId = "+this.volunteerId+";";
         
             // Result set get the result of the SQL query
             ResultSet rs = stmt.executeQuery(qry);
             if(rs.next()){
-                jLabel6.setText(rs.getString(1));
-                jLabel7.setText(rs.getString(2));
-                jLabel8.setText(rs.getString(3));
-                jLabel9.setText(rs.getString(4));
+                jTextField1.setText(rs.getString(1));
+                jTextField2.setText(rs.getString(2));
+                jTextField3.setText(rs.getString(3));
+                jTextField4.setText(rs.getString(4));
                 jTextArea1.setText(rs.getString(5));
             }
             else{
@@ -175,13 +248,17 @@ public class VolunteerProfile extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -215,14 +292,6 @@ public class VolunteerProfile extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("jLabel6");
-
-        jLabel7.setText("jLabel7");
-
-        jLabel8.setText("jLabel8");
-
-        jLabel9.setText("jLabel9");
-
         jLabel10.setText("Average Rate:");
 
         jLabel11.setText("jLabel11");
@@ -231,6 +300,42 @@ public class VolunteerProfile extends javax.swing.JFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Accept");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Reject");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setText("jTextField1");
+
+        jTextField2.setText("jTextField2");
+
+        jTextField3.setText("jTextField3");
+
+        jTextField4.setText("jTextField4");
+
+        jButton6.setText("Edit");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Save");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
             }
         });
 
@@ -244,12 +349,6 @@ public class VolunteerProfile extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
@@ -257,48 +356,69 @@ public class VolunteerProfile extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(138, 138, 138)
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(54, Short.MAX_VALUE))
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(102, 102, 102)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton7)))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel6)
                     .addComponent(jLabel10)
-                    .addComponent(jLabel11))
+                    .addComponent(jLabel11)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel7))
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel8))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel9))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(jButton7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addGap(38, 38, 38))
+                .addGap(3, 3, 3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -338,6 +458,30 @@ public class VolunteerProfile extends javax.swing.JFrame {
             frm.setVisible(true);
             dispose();
         }
+        else if(this.previousForm instanceof ManageApplications){
+            ManageApplications frm = new ManageApplications();
+            frm.setLocation(getLocation());
+            frm.setSize(getSize());
+            setVisible(false);
+            frm.setVisible(true);
+            dispose(); 
+        }
+        else if(this.previousForm instanceof RequestVolunteers){
+            RequestVolunteers frm = new RequestVolunteers();
+            frm.setLocation(getLocation());
+            frm.setSize(getSize());
+            setVisible(false);
+            frm.setVisible(true);
+            dispose();
+        }
+        else if(this.previousForm instanceof VolunteerMenu){
+            VolunteerMenu frm = new VolunteerMenu();
+            frm.setLocation(getLocation());
+            frm.setSize(getSize());
+            setVisible(false);
+            frm.setVisible(true);
+            dispose();
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -354,25 +498,17 @@ public class VolunteerProfile extends javax.swing.JFrame {
         try (Connection conn = DriverManager.getConnection(url, uid, pw)) {
 
             String qry = "INSERT INTO Request "
-            + " (requestNumber, positionId, volunteerId, requestStatus)"
-           + " VALUES (?, ?, ?, 'pending');";
+            + " (positionId, volunteerId, requestStatus)"
+           + " VALUES (?, ?, 'pending');";
+            
+            
 
-            int requestNumber = 0;
-            Statement tmpStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
-            ResultSet rs = tmpStmt.executeQuery("SELECT requestNumber FROM Request");
-            if(rs.last()){
-                requestNumber = rs.getInt("requestNumber")+1;
-            }
-            else{
-                System.out.println("Error");
-                System.exit(0);
-            }
+            
             
             PreparedStatement prepStmt = conn.prepareStatement(qry);
-            prepStmt.setInt(1, requestNumber);
-            prepStmt.setInt (2, this.positionId);
-            prepStmt.setInt (3, this.volunteerId);
+            
+            prepStmt.setInt (1, this.positionId);
+            prepStmt.setInt (2, this.volunteerId);
             
             prepStmt.execute();
             JOptionPane.showMessageDialog(this, "The request has been sent to the volunteer");
@@ -384,6 +520,120 @@ public class VolunteerProfile extends javax.swing.JFrame {
                 System.err.println("Exception: " + e);
             }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try (Connection conn = DriverManager.getConnection(url, uid, pw)){
+            System.out.println(this.volunteerId);
+           
+            String qry = "UPDATE Application"
+            + " SET applicationStatus = 'accepted'"
+            + " WHERE volunteerId = "+this.volunteerId+" AND positionId = "+this.positionId+"";
+            PreparedStatement prepStmt = conn.prepareStatement(qry);
+            prepStmt.execute();
+            JOptionPane.showMessageDialog(this, "Application has been accepted");
+            if(this.previousForm instanceof RequestVolunteers){
+                RequestVolunteers frm = new RequestVolunteers();
+                frm.setLocation(getLocation());
+                frm.setSize(getSize());
+                setVisible(false);
+                frm.setVisible(true);
+                dispose();
+            }
+            else if(this.previousForm instanceof ManageApplications){
+                ManageApplications frm = new ManageApplications();
+                frm.setLocation(getLocation());
+                frm.setSize(getSize());
+                setVisible(false);
+                frm.setVisible(true);
+                dispose();
+            }
+            
+        }
+        catch (SQLException ex){
+            System.err.println("SQLException: " + ex);
+        }
+        catch (Exception e) {
+            System.err.println("Exception: " + e);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        try (Connection conn = DriverManager.getConnection(url, uid, pw)){
+            
+            String qry = "UPDATE Application"
+            + " SET applicationStatus = 'rejected'"
+            + " WHERE volunteerId = "+this.volunteerId+" AND positionId = "+this.positionId+"";
+            PreparedStatement prepStmt = conn.prepareStatement(qry);
+            prepStmt.execute();
+            JOptionPane.showMessageDialog(this, "Application has been rejected");
+            ManageApplications frm = new ManageApplications();
+            frm.setLocation(getLocation());
+            frm.setSize(getSize());
+            setVisible(false);
+            frm.setVisible(true);
+            dispose();
+        }
+        catch (SQLException ex){
+            System.err.println("SQLException: " + ex);
+        }
+        catch (Exception e) {
+            System.err.println("Exception: " + e);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        jTextField1.setEditable(true);
+        jTextField2.setEditable(true);
+        jTextField3.setEditable(true);
+        jTextField4.setEditable(true);
+        jTextArea1.setEditable(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        try (Connection conn = DriverManager.getConnection(url, uid, pw); ) {
+           
+            String firstname = jTextField1.getText();
+            String lastname = jTextField2.getText();
+            
+            SimpleDateFormat formatdate = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date utilDate = formatdate.parse(jTextField3.getText());
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            String gender = jTextField4.getText();
+            
+            String address = jTextArea1.getText();
+            
+            String qry = "UPDATE Volunteer set firstname = '"+firstname+"', lastname = '"+lastname+"', birthdate = '"+sqlDate.toString()+"', gender = '"+gender+"', address = '"+address+"' WHERE VolunteerId = "+currentUserId+";";
+            PreparedStatement prepStmt = conn.prepareStatement(qry);
+            
+            
+            prepStmt.execute();
+            
+            
+            jTextField1.setText(firstname);
+            jTextField2.setText(lastname);
+            jTextField3.setText(sqlDate.toString());
+            jTextField4.setText(gender);
+            jTextArea1.setText(address);
+            
+            jTextField1.setEditable(false);
+            jTextField2.setEditable(false);
+            jTextField3.setEditable(false);
+            jTextField4.setEditable(false);
+            jTextArea1.setEditable(false);
+            
+            JOptionPane.showMessageDialog(this, "Saved Successfully");
+            return;
+ 
+
+            
+        }
+        catch (SQLException ex){
+            System.err.println("SQLException: " + ex);
+        }
+        catch(Exception ex){
+            
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -424,6 +674,10 @@ public class VolunteerProfile extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -431,12 +685,12 @@ public class VolunteerProfile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,22 +7,58 @@ package GUI;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+import java.io.IOException;
+
+
 /**
  *
  * @author alilmalki
  */
 public class PositionInfo extends javax.swing.JFrame {
-    String url = "jdbc:postgresql://localhost/lmalkia";
-    String uid = "lmalkia";
-    String pw = "Lmalki15";
+        String url;
+        String uid;
+        String pw;
     /**
      * Creates new form PositionInfo
      */
     private int positionId;
     public PositionInfo() {
+       try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
     }
     public PositionInfo(int positionId){
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
         this.positionId = positionId;
         jTextField1.setEditable(false);

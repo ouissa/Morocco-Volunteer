@@ -4,48 +4,31 @@
  * and open the template in the editor.
  */
 package GUI;
-import java.sql.*;
-import javax.swing.JOptionPane;
-import static GUI.Authentication.currentUserId;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.IOException;
-        
-        
+import java.sql.*;
+import static GUI.Authentication.currentUserId;
+import javax.swing.JOptionPane;
 /**
  *
  * @author alilmalki
  */
-public class EndorseVolunteer extends javax.swing.JFrame {
+public class EndorseOrganization extends javax.swing.JFrame {
 
     /**
-     * Creates new form EndorseVolunteer
+     * Creates new form EndorseOrganization
      */
-    String url;
-        String uid;
-        String pw;
-    private int volunteerId;
-    private Object form;
-    public EndorseVolunteer() {
-        try{
-            JSONParser parser = new JSONParser();
-            String pathToHome= System.getProperty("user.home");
-            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
-            JSONObject db_credentials = (JSONObject)obj;
-
-            url = (String) db_credentials.get("url");
-            uid = (String) db_credentials.get("username");
-            pw = (String) db_credentials.get("password");
-            
-        } catch (IOException e) {
-            System.out.println(e);
-        } catch (org.json.simple.parser.ParseException e) {
-            System.out.println(e);
-        }
+    private int organizationId;
+    private int positionId;
+    private String url;
+    private String uid;
+    private String pw;
+    public EndorseOrganization() {
         initComponents();
     }
-    public EndorseVolunteer(Object form, int volunteerId){
+    public EndorseOrganization(int organizationId, int positionId) {
         try{
             JSONParser parser = new JSONParser();
             String pathToHome= System.getProperty("user.home");
@@ -62,8 +45,8 @@ public class EndorseVolunteer extends javax.swing.JFrame {
             System.out.println(e);
         }
         initComponents();
-        this.volunteerId = volunteerId;
-        this.form = form;
+        this.organizationId = organizationId;
+        this.positionId = positionId;
     }
 
     /**
@@ -77,8 +60,8 @@ public class EndorseVolunteer extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
@@ -86,17 +69,11 @@ public class EndorseVolunteer extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Endorse Volunteer"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Endorse Organization"));
 
-        jLabel1.setText("Rating (1 to 5):");
+        jLabel1.setText("Rating:");
 
         jLabel2.setText("Comment:");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -124,35 +101,33 @@ public class EndorseVolunteer extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)
+                        .addGap(50, 50, 50)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton2)))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(63, 63, 63))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -175,41 +150,41 @@ public class EndorseVolunteer extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try (Connection conn = DriverManager.getConnection(url, uid, pw)) {
             
             
-            String qry = "INSERT INTO VolunteerEndorsement"
-            + " (organizationId, volunteerId, volunteerRating, comment)"
-           + " VALUES ("+currentUserId+", "+this.volunteerId+", "+Integer.parseInt(jTextField1.getText())+", '"+jTextArea1.getText()+"');";
+            System.out.println("Hello");
+            String qry = "INSERT INTO OrganizationRating"
+            + " (organizationId, volunteerId, organizationRating, comment)"
+           + " VALUES ("+this.organizationId+", "+currentUserId+", "+Integer.parseInt(jTextField1.getText())+", '"+jTextArea1.getText()+"');";
 
             PreparedStatement prepStmt = conn.prepareStatement(qry);
            
             
             prepStmt.execute();
+            System.out.println("Hello");
             
-            JOptionPane.showMessageDialog(this, "Volunteer Endorsed Successfully");
-            }
-            catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Error" + ex);
-            }
-            catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error" + e);
-            }
-            VolunteerProfile frm = new VolunteerProfile(this.form, this.volunteerId);
+            JOptionPane.showMessageDialog(this, "Organization Rated Successfully");
+            PositionInfoV frm = new PositionInfoV(this, this.positionId);
             frm.setLocation(getLocation());
             frm.setSize(getSize());
             setVisible(false);
             frm.setVisible(true);
-            dispose();
+            dispose();  
+        }
+        catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error" + ex);
+            
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error" + e);
+        }
+              
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        VolunteerProfile frm = new VolunteerProfile(this.form, this.volunteerId);
+        PositionInfoV frm = new PositionInfoV(this, this.positionId);
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
@@ -234,20 +209,20 @@ public class EndorseVolunteer extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EndorseVolunteer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EndorseOrganization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EndorseVolunteer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EndorseOrganization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EndorseVolunteer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EndorseOrganization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EndorseVolunteer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EndorseOrganization.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EndorseVolunteer().setVisible(true);
+                new EndorseOrganization().setVisible(true);
             }
         });
     }

@@ -12,6 +12,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.*;
 
 /**
  *
@@ -22,17 +27,48 @@ public class AddPosition extends javax.swing.JFrame {
     /**
      * Creates new form AddPosition
      */
+           String url;
+        String uid;
+        String pw;
     public AddPosition() {
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
     }
     public AddPosition(int eventId){
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
         this.eventId = eventId;
         
     }
-    String url = "jdbc:postgresql://localhost/lmalkia";
-    String uid = "lmalkia";
-    String pw = "Lmalki15";
+   
     private int eventId;
 
     /**
@@ -45,14 +81,12 @@ public class AddPosition extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
@@ -64,15 +98,13 @@ public class AddPosition extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Position"));
 
-        jLabel1.setText("PositionId:");
-
         jLabel2.setText("role:");
 
         jLabel3.setText("description:");
 
         jLabel4.setText("Acceptance Limit:");
 
-        jLabel5.setText("status (Open/Closed):");
+        jLabel5.setText("status (open/closed):");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -86,6 +118,11 @@ public class AddPosition extends javax.swing.JFrame {
         });
 
         jButton2.setText("Clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Go Back");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -105,13 +142,10 @@ public class AddPosition extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
                                 .addComponent(jLabel2)
                                 .addComponent(jLabel3))
                             .addGap(22, 22, 22)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                                .addComponent(jTextField2)))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addGap(38, 38, 38)
@@ -131,11 +165,7 @@ public class AddPosition extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -156,7 +186,7 @@ public class AddPosition extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -181,41 +211,66 @@ public class AddPosition extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
          try (Connection conn = DriverManager.getConnection(url, uid, pw)) {
-        String qry = "INSERT INTO Position "
-        + " (positionId, eventId, role, description, nbr_spots_required, nbr_acceptances, status)"
-       + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+        
+            int positionId = 0;
+            Statement tmpStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+            ResultSet rs = tmpStmt.executeQuery("SELECT positionId FROM Position ORDER BY positionId");
+            if(rs.last()){
+                positionId = rs.getInt("positionId")+1;
+            }
+            else{
+                System.out.println("Error");
+                System.exit(0);
+            } 
+            String qry = "INSERT INTO Position "
+            + " (positionId, eventId, role, description, nbr_spots_required, nbr_acceptances, status)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-        // create the insert preparedstatement
-        PreparedStatement prepStmt = conn.prepareStatement(qry);
-        prepStmt.setInt (1, Integer.parseInt(jTextField1.getText()));
-        prepStmt.setInt (2, eventId);
-        prepStmt.setString (3, jTextField2.getText());
-        prepStmt.setString(4, jTextArea1.getText());
-        
-        
-        prepStmt.setInt(5, Integer.parseInt(jTextField4.getText()));
-        
-        prepStmt.setInt (6, 0);
-        prepStmt.setString(7, jTextField5.getText());
-        
-        
-        prepStmt.execute();
-        JOptionPane.showMessageDialog(this, "The Position has been added");
-        
+            // create the insert preparedstatement
+            PreparedStatement prepStmt = conn.prepareStatement(qry);
+            prepStmt.setInt(1, positionId);
+            prepStmt.setInt (2, eventId);
+            prepStmt.setString (3, jTextField2.getText());
+            prepStmt.setString(4, jTextArea1.getText());
+
+
+            prepStmt.setInt(5, Integer.parseInt(jTextField4.getText()));
+
+            prepStmt.setInt (6, 0);
+            prepStmt.setString(7, jTextField5.getText());
+
+
+            prepStmt.execute();
+            JOptionPane.showMessageDialog(this, "The Position has been added");
+
         }
         catch (SQLException ex) {
-            System.err.println("SQLException: " + ex);
+            JOptionPane.showMessageDialog(this, "Invalid Input: "+ex);
         
         }
         catch (Exception e) {
-            System.err.println("Exception: " + e);
+            JOptionPane.showMessageDialog(this, "Invalid Input: "+e);
+            
         
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        ViewPositionsOfEvent frm = new ViewPositionsOfEvent(eventId);
+        frm.setLocation(getLocation());
+        frm.setSize(getSize());
+        setVisible(false);
+        frm.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jTextField2.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextArea1.setText("");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,7 +311,6 @@ public class AddPosition extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -264,7 +318,6 @@ public class AddPosition extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;

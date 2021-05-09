@@ -7,7 +7,11 @@ package GUI;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import static GUI.Authentication.currentUserId;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 /**
  *
  * @author alilmalki
@@ -17,10 +21,25 @@ public class AddEvent extends javax.swing.JFrame {
     /**
      * Creates new form AddEvent
      */
-    String url = "jdbc:postgresql://localhost/lmalkia";
-    String uid = "lmalkia";
-    String pw = "Lmalki15";
+    String url;
+    String uid;
+    String pw;
     public AddEvent() {
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
     }
 
@@ -34,14 +53,12 @@ public class AddEvent extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
@@ -54,8 +71,6 @@ public class AddEvent extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Add Event"));
-
-        jLabel1.setText("Event Id:");
 
         jLabel2.setText("Name:");
 
@@ -105,16 +120,11 @@ public class AddEvent extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(55, 55, 55)
-                            .addComponent(jTextField2))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(41, 41, 41)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel3)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(55, 55, 55)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -128,16 +138,12 @@ public class AddEvent extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -149,7 +155,7 @@ public class AddEvent extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -187,15 +193,25 @@ public class AddEvent extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try (Connection conn = DriverManager.getConnection(url, uid, pw)) {
-
+        int eventId = 0;
+            Statement tmpStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+            ResultSet rs = tmpStmt.executeQuery("SELECT eventId FROM Event ORDER BY eventId");
+            if(rs.last()){
+                eventId = rs.getInt("eventId")+1;
+            }
+            else{
+                System.out.println("Error");
+                System.exit(0);
+            }
         // the insert statement
         String qry = "INSERT INTO Event "
-        + " (eventid, name, Description, eventLocation,eventDate, field, organizationid)"
-       + " VALUES (?, ?, ?, ?, ?, ?, ?);";
+        + " ( eventId, name, Description, eventLocation,eventDate, field, organizationid)"
+       + " VALUES (?,  ?, ?, ?, ?, ?, ?);";
 
         // create the insert preparedstatement
         PreparedStatement prepStmt = conn.prepareStatement(qry);
-        prepStmt.setInt (1, Integer.parseInt(jTextField1.getText()));
+        prepStmt.setInt(1, eventId);
         prepStmt.setString (2, jTextField2.getText());
         prepStmt.setString(3, jTextArea1.getText());
         
@@ -213,12 +229,15 @@ public class AddEvent extends javax.swing.JFrame {
         
         }
         catch (SQLException ex) {
-            System.err.println("SQLException: " + ex);
+            
+            JOptionPane.showMessageDialog(this, "Input is not valid: "+ex);
+            return;
         
         }
         catch (Exception e) {
-            System.err.println("Exception: " + e);
-        
+            JOptionPane.showMessageDialog(this, "Input is not valid: "+e);
+            return;
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -232,7 +251,7 @@ public class AddEvent extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jTextField1.setText("");
+        
         jTextField2.setText("");
         jTextField3.setText("");
         jTextField4.setText("");
@@ -280,7 +299,6 @@ public class AddEvent extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -289,7 +307,6 @@ public class AddEvent extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

@@ -7,9 +7,14 @@ package GUI;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 import static GUI.Authentication.currentUserEmail;
-
+import static GUI.Authentication.currentUserId;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 /**
  *
@@ -20,10 +25,26 @@ public class ManageEvents extends javax.swing.JFrame {
     /**
      * Creates new form ManageEvents
      */
-    String url = "jdbc:postgresql://localhost/lmalkia";
-    String uid = "lmalkia";
-    String pw = "Lmalki15";
+        String url;
+        String uid;
+        String pw;
     public ManageEvents() {
+        
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
         // Initialize the jTable data model
         ((DefaultTableModel)(jTable1.getModel())).setRowCount(0);
@@ -43,7 +64,7 @@ public class ManageEvents extends javax.swing.JFrame {
                
                 
                 Statement stmt2 = conn.createStatement();
-                String qry2 = "Select * from event where organizationid = "+rs1.getInt(1)+";";
+                String qry2 = "Select eventId, name, eventlocation, field from event where organizationid = "+rs1.getInt(1)+";";
                 
                 ResultSet rs2 = stmt2.executeQuery(qry2);
                 ResultSetMetaData rsmd = rs2.getMetaData();
@@ -232,9 +253,10 @@ public class ManageEvents extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String location = jTextField1.getText();
         try (Connection conn = DriverManager.getConnection(url, uid, pw); Statement stmt = conn.createStatement()) {
-                String qry = "SELECT * from event where eventlocation = '"+location+"';";
+                String qry = "SELECT eventId, name, eventlocation, field from event where eventlocation = '"+location+"' AND organizationId = "+currentUserId+";";
                 
-
+                if(jTextField1.getText().equals(""))
+                    qry = "SELECT eventId, name, eventlocation, field FROM EVENT WHERE organizationId = "+currentUserId+"";
                 
                 // Result set get the result of the SQL query
                 ResultSet rs = stmt.executeQuery(qry);
@@ -247,10 +269,6 @@ public class ManageEvents extends javax.swing.JFrame {
 
                 Object[] row;
                 
-                if(!rs.next()){
-                    JOptionPane.showMessageDialog(this, "Not found");
-                    return;
-                }
 
                 while (rs.next()) {
                     row = new Object[c];
@@ -268,6 +286,10 @@ public class ManageEvents extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         int column = 0;
         int row = jTable1.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(this, "Please select an Event");
+            return;
+        }
         int eventid = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
         
         ViewPositionsOfEvent frm = new ViewPositionsOfEvent(eventid);
@@ -290,6 +312,10 @@ public class ManageEvents extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         int column = 0;
         int row = jTable1.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(this, "Please select an event");
+            return;
+        }
         int eventId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
         EventInfo frm = new EventInfo(eventId);
         frm.setLocation(getLocation());
@@ -302,6 +328,10 @@ public class ManageEvents extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int column = 0;
         int row = jTable1.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(this, "Please select an event");
+            return;
+        }
         int eventId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
         try (Connection conn = DriverManager.getConnection(url, uid, pw); ) {
  

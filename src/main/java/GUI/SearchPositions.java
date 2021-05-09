@@ -4,39 +4,28 @@
  * and open the template in the editor.
  */
 package GUI;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.swing.table.DefaultTableModel;
-import static GUI.Authentication.currentUserId;
-import java.sql.PreparedStatement;
-import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.IOException;
-
-        
-
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import static GUI.Authentication.currentUserId;
+import javax.swing.JOptionPane;
 /**
  *
- * @author alilmalki
+ * @author supernova
  */
-public class VolunteersForPosition extends javax.swing.JFrame {
+public class SearchPositions extends javax.swing.JFrame {
 
     /**
-     * Creates new form VolunteersForPosition
+     * Creates new form SearchPositions
      */
-        String url;
-        String uid;
-        String pw;
-    private int positionId;
+    private String url;
+    private String uid;
+    private String pw;
     
-    public VolunteersForPosition(){
+    public SearchPositions() {
         try{
             JSONParser parser = new JSONParser();
             String pathToHome= System.getProperty("user.home");
@@ -53,32 +42,16 @@ public class VolunteersForPosition extends javax.swing.JFrame {
             System.out.println(e);
         }
         initComponents();
-    }
-    public VolunteersForPosition(int positionId) {
-        try{
-            JSONParser parser = new JSONParser();
-            String pathToHome= System.getProperty("user.home");
-            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
-            JSONObject db_credentials = (JSONObject)obj;
-
-            url = (String) db_credentials.get("url");
-            uid = (String) db_credentials.get("username");
-            pw = (String) db_credentials.get("password");
-            
-        } catch (IOException e) {
-            System.out.println(e);
-        } catch (org.json.simple.parser.ParseException e) {
-            System.out.println(e);
-        }
-        initComponents();
-        this.positionId = positionId;
         ((DefaultTableModel)(jTable1.getModel())).setRowCount(0);
         ((DefaultTableModel)(jTable1.getModel())).setColumnCount(0);
         try (Connection conn = DriverManager.getConnection(url, uid, pw); Statement stmt = conn.createStatement()) {
-            String qry = "SELECT DISTINCT volunteerId, firstName, lastName FROM" +
-                         " Event AS E INNER JOIN Availability AS A" +
-                         " ON E.eventDate = A.availabilityDate NATURAL JOIN Volunteer" +
-                         " WHERE E.OrganizationId = "+currentUserId+" AND A.availabilityStatus = 'free';";
+            String qry = "SELECT P.positionId, P.role, P.description FROM Position AS P" +
+                        " INNER JOIN Event AS E ON E.eventId = P.eventId INNER JOIN" +
+                        " Availability AS A ON A.availabilityDate = E.eventDate INNER JOIN" +
+                        " Volunteer AS V ON V.volunteerId = A.volunteerId WHERE V.volunteerId = "+currentUserId+" AND"
+                    +   " A.availabilityStatus = 'free' AND" +
+                        " P.positionId NOT IN(SELECT PositionId FROM Application WHERE VolunteerId" +
+                        "= "+currentUserId+")";
            
             // Result set get the result of the SQL query
             ResultSet rs = stmt.executeQuery(qry);
@@ -113,16 +86,19 @@ public class VolunteersForPosition extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+
+        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Volunteers for Selected Position"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Search Positions"));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -137,19 +113,19 @@ public class VolunteersForPosition extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setText("List of Available Volunteers for the selected position:");
+        jLabel1.setText("List of Positions based on your availabilities:");
 
-        jButton3.setText("Back");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("View Position Info");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        jButton4.setText("View Profile");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -158,32 +134,32 @@ public class VolunteersForPosition extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jLabel1))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap(19, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addGap(195, 195, 195))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(133, 133, 133)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -206,30 +182,30 @@ public class VolunteersForPosition extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ViewPositionsOfEvent frm = new ViewPositionsOfEvent(this.positionId);
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        VolunteerMenu frm = new VolunteerMenu();
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
         frm.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int column = 0;
-        int row1 = jTable1.getSelectedRow();
-        if(row1 == -1){
+        int row = jTable1.getSelectedRow();
+        if(row == -1){
             JOptionPane.showMessageDialog(this, "Please select a position");
             return;
         }
-        int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row1, column).toString());
-        VolunteerProfile frm = new VolunteerProfile(this, volunteerId, this.positionId);
+        int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
+        PositionInfoV frm = new PositionInfoV(this, positionId);
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
         frm.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,28 +224,29 @@ public class VolunteersForPosition extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VolunteersForPosition.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchPositions.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VolunteersForPosition.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchPositions.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VolunteersForPosition.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchPositions.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VolunteersForPosition.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SearchPositions.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VolunteersForPosition().setVisible(true);
+                new SearchPositions().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

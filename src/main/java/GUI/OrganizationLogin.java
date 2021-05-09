@@ -9,12 +9,16 @@ package GUI;
 import static GUI.Authentication.currentUserEmail;
 import static GUI.Authentication.currentUserPassword;
 import static GUI.Authentication.currentUserId;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 /**
  *
  * @author alilmalki
@@ -24,10 +28,25 @@ public class OrganizationLogin extends javax.swing.JFrame {
     /**
      * Creates new form OrganizationLogin
      */
-    String url = "jdbc:postgresql://localhost/lmalkia";
-    String uid = "lmalkia";
-    String pw = "Lmalki15";
+    String url;
+    String uid;
+    String pw;
     public OrganizationLogin() {
+        try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
     }
 

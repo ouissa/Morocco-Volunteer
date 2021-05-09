@@ -4,29 +4,28 @@
  * and open the template in the editor.
  */
 package GUI;
+import static GUI.Authentication.currentUserId;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
-import static GUI.Authentication.currentUserId;
-import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.io.IOException;
-
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author alilmalki
  */
-public class ManageApplications extends javax.swing.JFrame {
+public class VolunteerAvailability extends javax.swing.JFrame {
 
     /**
-     * Creates new form ManageApplications
+     * Creates new form VolunteerAvailability
      */
-        String url;
-        String uid;
-        String pw;
-    public ManageApplications() {
+    private String url;
+    private String uid;
+    private String pw;
+    public VolunteerAvailability() {
         try{
             JSONParser parser = new JSONParser();
             String pathToHome= System.getProperty("user.home");
@@ -47,13 +46,12 @@ public class ManageApplications extends javax.swing.JFrame {
         ((DefaultTableModel)(jTable1.getModel())).setColumnCount(0);
         try (Connection conn = DriverManager.getConnection(url, uid, pw);
             Statement stmt = conn.createStatement()){
-                System.out.println(currentUserId);
-                String qry = "SELECT V.volunteerId, P.positionId, P.role, V.firstname, V.lastname, P.role, E.name"
-                + " FROM Volunteer AS V NATURAL JOIN Application AS A"
-                + " NATURAL JOIN Position AS P INNER JOIN Event as E ON E.eventId = P.eventId"
-                + " WHERE E.organizationId = "+currentUserId+" AND A.applicationStatus = 'pending';";            
-                ResultSet rs = stmt.executeQuery(qry);
                 
+                String qry = "SELECT *"
+                + " FROM availability where volunteerId = '"+currentUserId+"';";
+                
+                ResultSet rs = stmt.executeQuery(qry);
+
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int c = rsmd.getColumnCount();
                 DefaultTableModel dtm = new DefaultTableModel();
@@ -66,15 +64,12 @@ public class ManageApplications extends javax.swing.JFrame {
                         row[i] = rs.getString(i + 1);
                     dtm.addRow(row);
                 }
-                jTable1.setModel(dtm);
-                
-                //Fill Combo box 
-            
-               
+            jTable1.setModel(dtm);
             }
         catch (SQLException ex){
             System.err.println("SQLException: " + ex);
         }
+
     }
 
     /**
@@ -89,15 +84,14 @@ public class ManageApplications extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Manage Applications"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Manage Availabilities"));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,14 +106,16 @@ public class ManageApplications extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Accept");
+        jLabel1.setText("List of Availabilities:");
+
+        jButton1.setText("Add Availability");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Reject");
+        jButton2.setText("Delete Availability");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -133,13 +129,6 @@ public class ManageApplications extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("View Volunteer Info");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -150,35 +139,30 @@ public class ManageApplications extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(jLabel1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton3)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -202,76 +186,32 @@ public class ManageApplications extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int column = 0;
         int row = jTable1.getSelectedRow();
-        if(row == -1){
-            JOptionPane.showMessageDialog(this, "Please select an application");
-            return;
-        }
-        int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row, 0).toString());
-        int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, 1).toString());
-        
-        try (Connection conn = DriverManager.getConnection(url, uid, pw)){
-            System.out.println(volunteerId);
-           
-            String qry = "UPDATE Application"
-            + " SET applicationStatus = 'rejected'"
-            + " WHERE volunteerId = "+volunteerId+" AND positionId = "+positionId+"";
+        String availabilityDate = jTable1.getModel().getValueAt(row, column).toString();
+        try (Connection conn = DriverManager.getConnection(url, uid, pw); ) {
+ 
+            String qry = "Delete FROM Availability WHERE volunteerId = "+currentUserId+" AND availabilityDate = '"+availabilityDate+"';";
             PreparedStatement prepStmt = conn.prepareStatement(qry);
             prepStmt.execute();
-            JOptionPane.showMessageDialog(this, "Application has been accepted");
-            ManageApplications frm = new ManageApplications();
+            JOptionPane.showMessageDialog(this, "Deleted Successfully");
+            VolunteerAvailability frm = new VolunteerAvailability();
             frm.setLocation(getLocation());
             frm.setSize(getSize());
             setVisible(false);
             frm.setVisible(true);
             dispose();
-            
         }
         catch (SQLException ex){
             System.err.println("SQLException: " + ex);
         }
-        catch (Exception e) {
-            System.err.println("Exception: " + e);
+        catch(Exception ex){
+            
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        int row = jTable1.getSelectedRow();
-        if(row == -1){
-            JOptionPane.showMessageDialog(this, "Please select an application");
-            return;
-        }
-        int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row, 0).toString());
-        int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, 1).toString());
-        
-        try (Connection conn = DriverManager.getConnection(url, uid, pw)){
-            System.out.println(volunteerId);
-           
-            String qry = "UPDATE Application"
-            + " SET applicationStatus = 'accepted'"
-            + " WHERE volunteerId = "+volunteerId+" AND positionId = "+positionId+"";
-            PreparedStatement prepStmt = conn.prepareStatement(qry);
-            prepStmt.execute();
-            JOptionPane.showMessageDialog(this, "Application has been accepted");
-            ManageApplications frm = new ManageApplications();
-            frm.setLocation(getLocation());
-            frm.setSize(getSize());
-            setVisible(false);
-            frm.setVisible(true);
-            dispose();
-            
-        }
-        catch (SQLException ex){
-            System.err.println("SQLException: " + ex);
-        }
-        catch (Exception e) {
-            System.err.println("Exception: " + e);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        OrganizationMenu frm = new OrganizationMenu();
+        VolunteerMenu frm = new VolunteerMenu();
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
@@ -279,22 +219,14 @@ public class ManageApplications extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-        int row = jTable1.getSelectedRow();
-        if(row == -1){
-            JOptionPane.showMessageDialog(this, "Please select an application");
-            return;
-        }
-        int volunteerId = Integer.parseInt(jTable1.getModel().getValueAt(row, 0).toString());
-        int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, 1).toString());
-        VolunteerProfile frm = new VolunteerProfile(this, volunteerId, positionId);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AddAvailability frm = new AddAvailability();
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
         frm.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,20 +245,20 @@ public class ManageApplications extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManageApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VolunteerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManageApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VolunteerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManageApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VolunteerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManageApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VolunteerAvailability.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManageApplications().setVisible(true);
+                new VolunteerAvailability().setVisible(true);
             }
         });
     }
@@ -335,8 +267,7 @@ public class ManageApplications extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

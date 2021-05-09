@@ -153,6 +153,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Endorse Volunteer"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
@@ -171,7 +174,7 @@
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
-                <StringItem index="0" value="Current Volunteers"/>
+                <StringItem index="0" value="Accepted Volunteers"/>
                 <StringItem index="1" value="Previously Participated Volunteers"/>
                 <StringItem index="2" value="All"/>
               </StringArray>

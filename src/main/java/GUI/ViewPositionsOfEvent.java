@@ -7,6 +7,12 @@ package GUI;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+import java.io.IOException;
+
+
 /**
  *
  * @author alilmalki
@@ -16,20 +22,50 @@ public class ViewPositionsOfEvent extends javax.swing.JFrame {
     /**
      * Creates new form ViewEventPosition
      */
-    String url = "jdbc:postgresql://localhost/lmalkia";
-    String uid = "lmalkia";
-    String pw = "Lmalki15";
+        String url;
+        String uid;
+        String pw;
     private int eventId;
     public ViewPositionsOfEvent() {
+                try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         initComponents();
     }
     public ViewPositionsOfEvent(int eventId){
+                try{
+            JSONParser parser = new JSONParser();
+            String pathToHome= System.getProperty("user.home");
+            Object obj = parser.parse(new FileReader(pathToHome + "/NetBeansProjects/VolunteerMorocco/src/main/java/environment_variables/db_credentials.json"));
+            JSONObject db_credentials = (JSONObject)obj;
+
+            url = (String) db_credentials.get("url");
+            uid = (String) db_credentials.get("username");
+            pw = (String) db_credentials.get("password");
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        } catch (org.json.simple.parser.ParseException e) {
+            System.out.println(e);
+        }
         this.eventId = eventId;
         initComponents();
         ((DefaultTableModel)(jTable1.getModel())).setRowCount(0);
         ((DefaultTableModel)(jTable1.getModel())).setColumnCount(0);
         try (Connection conn = DriverManager.getConnection(url, uid, pw); Statement stmt = conn.createStatement()) {
-            String qry = "SELECT * from Position where eventid = "+eventId+";";
+            String qry = "SELECT positionId, role, description, status from Position where eventid = "+eventId+";";
             
 
             
@@ -195,6 +231,10 @@ public class ViewPositionsOfEvent extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         int column = 0;
         int row = jTable1.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(this, "Please select a position");
+            return;
+        }
         int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
         VolunteersForPosition frm = new VolunteersForPosition(positionId);
         frm.setLocation(getLocation());
@@ -216,6 +256,10 @@ public class ViewPositionsOfEvent extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         int column = 0;
         int row = jTable1.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(this, "Please select a position");
+            return;
+        }
         int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
         PositionInfo frm = new PositionInfo(positionId);
         frm.setLocation(getLocation());
@@ -228,6 +272,10 @@ public class ViewPositionsOfEvent extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int column = 0;
         int row = jTable1.getSelectedRow();
+        if(row == -1){
+            JOptionPane.showMessageDialog(this, "Please select a position");
+            return;
+        }
         int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
         try (Connection conn = DriverManager.getConnection(url, uid, pw); ) {
  
