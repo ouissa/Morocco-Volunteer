@@ -75,15 +75,21 @@ public class VolunteerLogin extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("VolunteerLogin"));
+        jPanel1.setBackground(new java.awt.Color(243, 243, 243));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "VolunteerLogin", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(86, 122, 152))); // NOI18N
+        jPanel1.setForeground(new java.awt.Color(86, 122, 152));
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 600));
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(86, 122, 152));
         jLabel1.setText("Email:");
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(86, 122, 152));
         jLabel2.setText("Password:");
 
+        jButton1.setBackground(new java.awt.Color(156, 189, 229));
         jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +97,7 @@ public class VolunteerLogin extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(156, 189, 229));
         jButton2.setText("Clear");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,6 +105,7 @@ public class VolunteerLogin extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(156, 189, 229));
         jButton3.setText("Main menu");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

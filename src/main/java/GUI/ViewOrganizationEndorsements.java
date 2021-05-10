@@ -97,9 +97,9 @@ public class ViewOrganizationEndorsements extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("View Endorsements"));
+        jPanel1.setBackground(new java.awt.Color(243, 243, 243));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "View Endorsements", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(86, 122, 152))); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 600));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -115,6 +115,7 @@ public class ViewOrganizationEndorsements extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setBackground(new java.awt.Color(156, 189, 229));
         jButton1.setText("Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,8 +123,11 @@ public class ViewOrganizationEndorsements extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(156, 189, 229));
         jButton2.setText("View Graph");
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(86, 122, 152));
         jLabel1.setText("List of all Endorsements Received by Volunteers: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -135,7 +139,7 @@ public class ViewOrganizationEndorsements extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addContainerGap(559, Short.MAX_VALUE))
+                        .addContainerGap(541, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -171,7 +175,7 @@ public class ViewOrganizationEndorsements extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

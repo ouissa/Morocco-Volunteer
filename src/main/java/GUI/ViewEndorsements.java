@@ -95,9 +95,9 @@ public class ViewEndorsements extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("View Endorsements"));
+        jPanel1.setBackground(new java.awt.Color(243, 243, 243));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "View Endorsements", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(86, 122, 152))); // NOI18N
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,6 +112,7 @@ public class ViewEndorsements extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setBackground(new java.awt.Color(156, 189, 229));
         jButton1.setText("Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,8 +120,11 @@ public class ViewEndorsements extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(156, 189, 229));
         jButton2.setText("View Graph");
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(86, 122, 152));
         jLabel1.setText("List of all Endorsements Received by Volunteers: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -138,7 +142,7 @@ public class ViewEndorsements extends javax.swing.JFrame {
                             .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 495, Short.MAX_VALUE)))
+                        .addGap(0, 477, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(

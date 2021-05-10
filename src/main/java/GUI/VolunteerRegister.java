@@ -82,19 +82,29 @@ public class VolunteerRegister extends javax.swing.JFrame {
         jPasswordField2 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Register as Volunteer"));
+        jPanel1.setBackground(new java.awt.Color(243, 243, 243));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Register as Volunteer", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(86, 122, 152))); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 600));
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(86, 122, 152));
         jLabel2.setText("first name:");
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(86, 122, 152));
         jLabel3.setText("last name:");
 
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(86, 122, 152));
         jLabel4.setText("birthdate:");
 
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(86, 122, 152));
         jLabel5.setText("gender:");
 
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(86, 122, 152));
         jLabel6.setText("address:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "M", "F" }));
@@ -104,12 +114,19 @@ public class VolunteerRegister extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(86, 122, 152));
         jLabel7.setText("Email:");
 
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(86, 122, 152));
         jLabel8.setText("Password:");
 
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(86, 122, 152));
         jLabel9.setText("Confirm Password:");
 
+        jButton1.setBackground(new java.awt.Color(156, 189, 229));
         jButton1.setText("Register");
         jButton1.setActionCommand("");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -118,6 +135,7 @@ public class VolunteerRegister extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(156, 189, 229));
         jButton2.setText("Clear");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +143,7 @@ public class VolunteerRegister extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(156, 189, 229));
         jButton3.setText("Main menu");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +176,7 @@ public class VolunteerRegister extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(28, 28, 28)

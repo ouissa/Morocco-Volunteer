@@ -128,10 +128,11 @@ public class OrganizationMenu extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("OrganizationMenu"));
+        jPanel2.setBackground(new java.awt.Color(243, 243, 243));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "OrganizationMenu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(86, 122, 152))); // NOI18N
 
+        jButton2.setBackground(new java.awt.Color(156, 189, 229));
         jButton2.setText("Manage Events");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,6 +140,7 @@ public class OrganizationMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(156, 189, 229));
         jButton3.setText("Manage Applications");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,6 +148,7 @@ public class OrganizationMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setBackground(new java.awt.Color(156, 189, 229));
         jButton4.setText("Logout");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +156,7 @@ public class OrganizationMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(156, 189, 229));
         jButton1.setText("Manage Volunteers");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,12 +164,19 @@ public class OrganizationMenu extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(86, 122, 152));
         jLabel1.setText("Number of events today:");
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(86, 122, 152));
         jLabel2.setText("Number of past volunteers:");
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(86, 122, 152));
         jLabel3.setText("Average Rating:");
 
+        jButton5.setBackground(new java.awt.Color(156, 189, 229));
         jButton5.setText("View Endorsements");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,6 +190,7 @@ public class OrganizationMenu extends javax.swing.JFrame {
 
         jLabel6.setText("jLabel6");
 
+        jButton6.setBackground(new java.awt.Color(156, 189, 229));
         jButton6.setText("Request Volunteers");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,6 +198,7 @@ public class OrganizationMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton7.setBackground(new java.awt.Color(156, 189, 229));
         jButton7.setText("Manage Sent Requests");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,6 +206,8 @@ public class OrganizationMenu extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(86, 122, 152));
         jLabel7.setText("Statistics:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -259,7 +274,7 @@ public class OrganizationMenu extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addContainerGap())
         );

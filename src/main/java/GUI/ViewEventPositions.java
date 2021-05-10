@@ -72,9 +72,9 @@ public class ViewEventPositions extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("View Positions"));
+        jPanel1.setBackground(new java.awt.Color(243, 243, 243));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "View Positions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(86, 122, 152))); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 600));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -90,6 +90,7 @@ public class ViewEventPositions extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setBackground(new java.awt.Color(156, 189, 229));
         jButton1.setText("View Position's Volunteers");
         jButton1.setActionCommand("");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -98,10 +99,13 @@ public class ViewEventPositions extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(156, 189, 229));
         jButton2.setText("Add New Position");
 
+        jButton3.setBackground(new java.awt.Color(156, 189, 229));
         jButton3.setText("Delete Position");
 
+        jButton4.setBackground(new java.awt.Color(156, 189, 229));
         jButton4.setText("Back");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

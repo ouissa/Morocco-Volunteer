@@ -80,10 +80,14 @@ public class VolunteerMenu extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(243, 243, 243));
         setPreferredSize(new java.awt.Dimension(900, 600));
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(86, 122, 152));
         jLabel1.setText("Welcome");
 
+        jButton1.setBackground(new java.awt.Color(156, 189, 229));
         jButton1.setText("My Positions");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +95,7 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(156, 189, 229));
         jButton3.setText("Search for new Positions");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,6 +103,7 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(156, 189, 229));
         jButton2.setText("Manage Received Requests");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +111,7 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setBackground(new java.awt.Color(156, 189, 229));
         jButton4.setText("Logout");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +119,7 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setBackground(new java.awt.Color(156, 189, 229));
         jButton5.setText("View Profile");
         jButton5.setActionCommand("View my Profile");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +128,7 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton6.setBackground(new java.awt.Color(156, 189, 229));
         jButton6.setText("Manage Availabilities");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +136,7 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton7.setBackground(new java.awt.Color(156, 189, 229));
         jButton7.setText("Manage Sent Applications");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,6 +144,7 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton8.setBackground(new java.awt.Color(156, 189, 229));
         jButton8.setText("View Received Endorsements");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,6 +152,8 @@ public class VolunteerMenu extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(86, 122, 152));
         jLabel2.setText("Number of Events you participated in:");
 
         jLabel3.setText("jLabel3");
