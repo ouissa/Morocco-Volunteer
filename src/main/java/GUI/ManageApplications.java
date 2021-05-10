@@ -51,7 +51,8 @@ public class ManageApplications extends javax.swing.JFrame {
                 String qry = "SELECT V.volunteerId, P.positionId, P.role, V.firstname, V.lastname, P.role, E.name"
                 + " FROM Volunteer AS V NATURAL JOIN Application AS A"
                 + " NATURAL JOIN Position AS P INNER JOIN Event as E ON E.eventId = P.eventId"
-                + " WHERE E.organizationId = "+currentUserId+" AND A.applicationStatus = 'pending';";            
+                + " WHERE E.organizationId = "+currentUserId+" AND A.applicationStatus = 'pending';"; 
+                
                 ResultSet rs = stmt.executeQuery(qry);
                 
                 ResultSetMetaData rsmd = rs.getMetaData();

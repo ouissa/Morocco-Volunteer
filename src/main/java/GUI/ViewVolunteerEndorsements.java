@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package GUI;
+
 import static GUI.Authentication.currentUserId;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,26 +12,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author alilmalki
  */
-public class ManageSentApplications extends javax.swing.JFrame {
+public class ViewVolunteerEndorsements extends javax.swing.JFrame {
 
     /**
-     * Creates new form ManageSentApplications
+     * Creates new form ViewVolunteerEndorsements
      */
-    String url;
-    String uid;
-    String pw;
-    public ManageSentApplications() {
+    private String url;
+    private String uid;
+    private String pw;
+    public ViewVolunteerEndorsements() {
         try{
             JSONParser parser = new JSONParser();
             String pathToHome= System.getProperty("user.home");
@@ -47,36 +47,34 @@ public class ManageSentApplications extends javax.swing.JFrame {
             System.out.println(e);
         }
         initComponents();
+        ((DefaultTableModel)(jTable1.getModel())).setRowCount(0);
+        ((DefaultTableModel)(jTable1.getModel())).setColumnCount(0);
         try (Connection conn = DriverManager.getConnection(url, uid, pw);
-        Statement stmt = conn.createStatement())
-            
-        {
-            
-            /*String qry = "SELECT P.positionId, P.role, O.organizationName, E.name FROM Application AS A INNER JOIN Position AS P" +
-                        " ON P.positionId = A.positionId INNER JOIN Event AS E ON E.eventId = P.eventId" +
-                        " INNER JOIN Organization AS O ON O.organizationId = E.organizationId" +
-                        " WHERE A.volunteerId = "+currentUserId+" AND A.applicationStatus = 'pending';";*/
-            String qry = "select * from vwPendingApplications where volunteerId = "+currentUserId+"";
+            Statement stmt1 = conn.createStatement()){
                 
-                   
-            // Result set get the result of the SQL query
-            ResultSet rs = stmt.executeQuery(qry);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int c = rsmd.getColumnCount();
-            DefaultTableModel dtm = new DefaultTableModel();
-            for (int i = 1; i <= c; i++)
-            dtm.addColumn(rsmd.getColumnName(i));
-            Object[] row;
-            while (rs.next()) {
-                row = new Object[c];
-                for (int i = 0; i < c; i++)
-                row[i] = rs.getString(i + 1);
-                dtm.addRow(row);
-            }
+                /*String qry1 = "SELECT organizationRating, Comment"
+                + " FROM organizationRating where organizationId = '"+currentUserId+"';";*/
+                
+                String qry1 = "select * from vwratingswithOrgauthor where volunteerId = "+currentUserId+"";
+                
+                ResultSet rs1 = stmt1.executeQuery(qry1);
+                
+
+                ResultSetMetaData rsmd = rs1.getMetaData();
+                int c = rsmd.getColumnCount();
+                DefaultTableModel dtm = new DefaultTableModel();
+                for (int i = 1; i <= c; i++)
+                    dtm.addColumn(rsmd.getColumnName(i));
+                Object[] row;
+                while (rs1.next()) {
+                    row = new Object[c];
+                    for (int i = 0; i < c; i++)
+                        row[i] = rs1.getString(i + 1);
+                    dtm.addRow(row);
+                }
             jTable1.setModel(dtm);
-        }
-        catch (SQLException ex)
-        {
+            }
+        catch (SQLException ex){
             System.err.println("SQLException: " + ex);
         }
     }
@@ -95,13 +93,12 @@ public class ManageSentApplications extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Manage Sent Applications"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Received Endorsements"));
 
-        jLabel1.setText("List of sent applications:");
+        jLabel1.setText("List of all the received endorsements:");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -116,17 +113,10 @@ public class ManageSentApplications extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Cancel Application");
+        jButton1.setText("Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Back");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -140,27 +130,23 @@ public class ManageSentApplications extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(182, 182, 182)
+                        .addComponent(jButton1)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,47 +169,13 @@ public class ManageSentApplications extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         VolunteerMenu frm = new VolunteerMenu();
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
         frm.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int row = jTable1.getSelectedRow();
-        if(row == -1){
-            JOptionPane.showMessageDialog(this, "Please select an application");
-            return;
-        }
-        
-        int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, 0).toString());
-        
-        try (Connection conn = DriverManager.getConnection(url, uid, pw)){
-            
-           
-            String qry = "UPDATE Application"
-            + " SET applicationStatus = 'cancelled'"
-            + " WHERE volunteerId = "+currentUserId+" AND positionId = "+positionId+"";
-            PreparedStatement prepStmt = conn.prepareStatement(qry);
-            prepStmt.execute();
-            JOptionPane.showMessageDialog(this, "Application has been cancelled");
-            ManageSentApplications frm = new ManageSentApplications();
-            frm.setLocation(getLocation());
-            frm.setSize(getSize());
-            setVisible(false);
-            frm.setVisible(true);
-            dispose();
-            
-        }
-        catch (SQLException ex){
-            System.err.println("SQLException: " + ex);
-        }
-        catch (Exception e) {
-            System.err.println("Exception: " + e);
-        }        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -243,27 +195,26 @@ public class ManageSentApplications extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManageSentApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewVolunteerEndorsements.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManageSentApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewVolunteerEndorsements.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManageSentApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewVolunteerEndorsements.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManageSentApplications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewVolunteerEndorsements.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManageSentApplications().setVisible(true);
+                new ViewVolunteerEndorsements().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
