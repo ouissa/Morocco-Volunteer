@@ -48,7 +48,7 @@ public class ManageApplications extends javax.swing.JFrame {
         try (Connection conn = DriverManager.getConnection(url, uid, pw);
             Statement stmt = conn.createStatement()){
                 System.out.println(currentUserId);
-                String qry = "SELECT V.volunteerId, P.positionId, P.role, V.firstname, V.lastname, P.role, E.name"
+                String qry = "SELECT V.volunteerId, P.positionId, V.firstname, V.lastname, P.role, E.name"
                 + " FROM Volunteer AS V NATURAL JOIN Application AS A"
                 + " NATURAL JOIN Position AS P INNER JOIN Event as E ON E.eventId = P.eventId"
                 + " WHERE E.organizationId = "+currentUserId+" AND A.applicationStatus = 'pending';"; 
@@ -220,7 +220,7 @@ public class ManageApplications extends javax.swing.JFrame {
             + " WHERE volunteerId = "+volunteerId+" AND positionId = "+positionId+"";
             PreparedStatement prepStmt = conn.prepareStatement(qry);
             prepStmt.execute();
-            JOptionPane.showMessageDialog(this, "Application has been accepted");
+            JOptionPane.showMessageDialog(this, "Application has been rejected");
             ManageApplications frm = new ManageApplications();
             frm.setLocation(getLocation());
             frm.setSize(getSize());

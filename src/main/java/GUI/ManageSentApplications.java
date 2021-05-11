@@ -210,7 +210,7 @@ public class ManageSentApplications extends javax.swing.JFrame {
             return;
         }
         
-        int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, 0).toString());
+        int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, 1).toString());
         
         try (Connection conn = DriverManager.getConnection(url, uid, pw)){
             

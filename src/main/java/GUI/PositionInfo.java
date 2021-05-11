@@ -25,6 +25,7 @@ public class PositionInfo extends javax.swing.JFrame {
      * Creates new form PositionInfo
      */
     private int positionId;
+    private int eventId;
     public PositionInfo() {
        try{
             JSONParser parser = new JSONParser();
@@ -43,7 +44,7 @@ public class PositionInfo extends javax.swing.JFrame {
         }
         initComponents();
     }
-    public PositionInfo(int positionId){
+    public PositionInfo(int positionId, int eventId){
         try{
             JSONParser parser = new JSONParser();
             String pathToHome= System.getProperty("user.home");
@@ -61,6 +62,7 @@ public class PositionInfo extends javax.swing.JFrame {
         }
         initComponents();
         this.positionId = positionId;
+        this.eventId = eventId;
         jTextField1.setEditable(false);
         jTextField2.setEditable(false);
         jTextArea1.setEditable(false);
@@ -286,7 +288,7 @@ public class PositionInfo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ViewPositionsOfEvent frm = new ViewPositionsOfEvent(this.positionId);
+        ViewPositionsOfEvent frm = new ViewPositionsOfEvent(this.eventId);
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);

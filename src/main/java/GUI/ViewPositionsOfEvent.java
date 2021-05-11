@@ -112,6 +112,7 @@ public class ViewPositionsOfEvent extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(900, 600));
 
         jPanel1.setBackground(new java.awt.Color(243, 243, 243));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "View Positions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(86, 122, 152))); // NOI18N
@@ -272,7 +273,7 @@ public class ViewPositionsOfEvent extends javax.swing.JFrame {
             return;
         }
         int positionId = Integer.parseInt(jTable1.getModel().getValueAt(row, column).toString());
-        PositionInfo frm = new PositionInfo(positionId);
+        PositionInfo frm = new PositionInfo(positionId, this.eventId);
         frm.setLocation(getLocation());
         frm.setSize(getSize());
         setVisible(false);
@@ -294,7 +295,7 @@ public class ViewPositionsOfEvent extends javax.swing.JFrame {
             PreparedStatement prepStmt = conn.prepareStatement(qry);
             prepStmt.execute();
             JOptionPane.showMessageDialog(this, "Deleted Successfully");
-            ViewPositionsOfEvent frm = new ViewPositionsOfEvent();
+            ViewPositionsOfEvent frm = new ViewPositionsOfEvent(this.eventId);
             frm.setLocation(getLocation());
             frm.setSize(getSize());
             setVisible(false);

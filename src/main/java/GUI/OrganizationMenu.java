@@ -50,7 +50,7 @@ public class OrganizationMenu extends javax.swing.JFrame {
                 System.out.println(java.time.LocalDate.now().toString());
                 String qry1 = "SELECT COUNT(*) FROM Event" +
                             " WHERE eventid IN (" +
-                            " SELECT eventId FROM Event WHERE organizationId = "+currentUserId+" AND EventDate = '"+java.time.LocalDate.now().toString()+"'" +
+                            " SELECT eventId FROM Event WHERE organizationId = "+currentUserId+" AND EventDate = '2021-05-12'" +
                             " )";
                 ResultSet rs1 = stmt.executeQuery(qry1);
                 if(rs1.next())
@@ -184,11 +184,11 @@ public class OrganizationMenu extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("jLabel4");
+        jLabel4.setText("0");
 
-        jLabel5.setText("jLabel5");
+        jLabel5.setText("0");
 
-        jLabel6.setText("jLabel6");
+        jLabel6.setText("0");
 
         jButton6.setBackground(new java.awt.Color(156, 189, 229));
         jButton6.setText("Request Volunteers");
